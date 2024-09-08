@@ -10,7 +10,9 @@ uses
   Repository.Drivers.MSSQL in 'Repository\Drivers\Repository.Drivers.MSSQL.pas' {MSSQLDriver: TDataModule},
   Controller.DB.Tables in 'Controller\Controller.DB.Tables.pas',
   View.Components.TableCard in 'View\Components\View.Components.TableCard.pas' {CompTableCard: TFrame},
-  View.Components.FieldRow in 'View\Components\View.Components.FieldRow.pas' {CompFieldRow: TFrame};
+  View.Table in 'View\View.Table.pas' {ViewTable},
+  Utils in 'Utils\Utils.pas',
+  Controller.Model.Factory in 'Controller\Controller.Model.Factory.pas';
 
 {$R *.res}
 
