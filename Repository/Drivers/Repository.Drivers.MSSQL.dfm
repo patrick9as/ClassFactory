@@ -1,5 +1,6 @@
 object MSSQLDriver: TMSSQLDriver
   OldCreateOrder = False
+  OnDestroy = DataModuleDestroy
   Height = 229
   Width = 405
   object FDConnection: TFDConnection

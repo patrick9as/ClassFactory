@@ -17,9 +17,14 @@ type
   TFirebirdDriver = class(TDataModule, IDriver)
   private
     { Private declarations }
+    function GetFieldByTable(ATable: TDBTable): TObjectList<TDBField>;
+    procedure MapFieldTypes;
+    function GetInternalFieldType(const AExternalFieldType: string): TFieldType;
+    function GetExternalFieldType(const AInternalFieldType: TFieldType): string;
   public
     { Public declarations }
     function New: IDriver;
+    function FieldTypes: TDictionary<TFieldType, String>;
     function Tables: TObjectList<TDBTable>;
     function Procedures: TList<TDBProcedure>;
     function Functions: TList<TDBFunction>;
@@ -39,12 +44,40 @@ implementation
 
 { TRepositoryDriverFirebird }
 
+function TFirebirdDriver.FieldTypes: TDictionary<TFieldType, String>;
+begin
+
+end;
+
 function TFirebirdDriver.Functions: TList<TDBFunction>;
 begin
 
 end;
 
+function TFirebirdDriver.GetExternalFieldType(
+  const AInternalFieldType: TFieldType): string;
+begin
+
+end;
+
+function TFirebirdDriver.GetFieldByTable(
+  ATable: TDBTable): TObjectList<TDBField>;
+begin
+
+end;
+
+function TFirebirdDriver.GetInternalFieldType(
+  const AExternalFieldType: string): TFieldType;
+begin
+
+end;
+
 function TFirebirdDriver.Indexes: TList<TDBIndex>;
+begin
+
+end;
+
+procedure TFirebirdDriver.MapFieldTypes;
 begin
 
 end;

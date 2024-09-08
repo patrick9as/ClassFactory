@@ -19,7 +19,12 @@ type
   end;
 
   IDriver = interface
+    function FieldTypes: TDictionary<TFieldType, String>;
+    function GetFieldByTable(ATable: TDBTable): TObjectList<TDBField>;
     function New: IDriver;
+    procedure MapFieldTypes;
+    function GetInternalFieldType(const AExternalFieldType: string): TFieldType;
+    function GetExternalFieldType(const AInternalFieldType: TFieldType): string;
     function Tables: TObjectList<TDBTable>;
     function Procedures: TList<TDBProcedure>;
     function Functions: TList<TDBFunction>;

@@ -3,6 +3,7 @@ unit Model.DB.Entities;
 interface
 
 uses
+  Data.DB,
   System.Generics.Collections;
 
 type

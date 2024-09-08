@@ -17,11 +17,7 @@ type
     btnTables: TButton;
     ScrollBox: TScrollBox;
     FlowPanel: TFlowPanel;
-    ScrollBox1: TScrollBox;
-    pnlFields: TFlowPanel;
-    memo: TMemo;
     procedure btnTablesClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure ScrollBoxMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure FormResize(Sender: TObject);
@@ -37,7 +33,7 @@ type
 
 var
   frmMenu: TfrmMenu;
-  TableCards: TList<TCompTableCard>;
+  TableCards: TObjectList<TCompTableCard>;
   Tables: TObjectList<TDBTable>;
 
 implementation
@@ -54,14 +50,9 @@ end;
 procedure TfrmMenu.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   ClearTableCards();
-  TableCards.Free();
-  ClearTables;
-  Tables.Free();
-end;
-
-procedure TfrmMenu.FormCreate(Sender: TObject);
-begin
-  TableCards := TList<TCompTableCard>.Create();
+//  TableCards.Free();
+//  ClearTables;
+//  Tables.Free();
 end;
 
 procedure TfrmMenu.FormResize(Sender: TObject);
@@ -69,8 +60,6 @@ begin
   FlowPanel.AutoSize := False;
   FlowPanel.Height := 0;
   FlowPanel.AutoSize := True;
-  pnlFields.AutoSize := False;
-  pnlFields.AutoSize := True;
 end;
 
 procedure TfrmMenu.ScrollBoxMouseWheel(Sender: TObject; Shift: TShiftState;
@@ -87,13 +76,17 @@ procedure TfrmMenu.ClearTableCards;
 var
   tableCard: TCompTableCard;
 begin
-  if tableCards.Count = 0 then
+  if not Assigned(TableCards) then
     Exit;
+
+  if TableCards.Count = 0 then
+    Exit;
+
   for tableCard in TableCards do
-  begin
-    tableCard.Free;
-  end;
-  TableCards.Clear;
+    tableCard.Table.Fields.Free();
+
+  Tables.Free();
+  TableCards.Free();
 end;
 
 procedure TfrmMenu.CreateTableCards();
@@ -103,7 +96,9 @@ var
   tableCard: TCompTableCard;
   I: Integer;
 begin
+
   ClearTableCards();
+  TableCards := TObjectList<TCompTableCard>.Create();
 
   ScrollBox.Enabled := False;
 
@@ -113,7 +108,7 @@ begin
   begin
     ScrollBox.Enabled := True;
 
-    tableCard := TCompTableCard.Create(table, pnlFields);
+    tableCard := TCompTableCard.Create(table);
     tableCard.Name := 'tableCard' + I.ToString;
     tableCard.Parent := Self.FlowPanel;
     tableCard.Show();
@@ -121,22 +116,21 @@ begin
 
     Inc(I);
   end;
-
 end;
 
 procedure TfrmMenu.ClearTables;
 var
   table: TDBTable;
 begin
-  if not Assigned(Tables) then
-    Exit;
+//  if not Assigned(Tables) then
+//    Exit;
 
-  if Tables.Count = 0 then
-    Exit;
-  for table in Tables do
-  begin
-    table.Fields.Free;
-  end;
+//  if Tables.Count = 0 then
+//    Exit;
+//  for table in Tables do
+//  begin
+//    table.Fields.Free;
+//  end;
 end;
 
 end.

@@ -25,12 +25,17 @@ type
     qryFieldsByTableFieldType: TWideStringField;
     qryFieldsByTableSize: TIntegerField;
     qryFieldsByTableID: TIntegerField;
+    procedure DataModuleDestroy(Sender: TObject);
   private
+    FFieldTypes: TDictionary<TFieldType, String>;
     function GetFieldByTable(ATable: TDBTable): TObjectList<TDBField>;
-    { Private declarations }
+    procedure MapFieldTypes;
+    function GetInternalFieldType(const AExternalFieldType: string): TFieldType;
+    function GetExternalFieldType(const AInternalFieldType: TFieldType): string;
   public
-    { Public declarations }
+    constructor Create(AOwner: TComponent);
     function New: IDriver;
+    function FieldTypes: TDictionary<TFieldType, String>;
     function Tables: TObjectList<TDBTable>;
     function Procedures: TList<TDBProcedure>;
     function Functions: TList<TDBFunction>;
@@ -50,6 +55,23 @@ implementation
 
 { TMSSQLDriver }
 
+constructor TMSSQLDriver.Create(AOwner: TComponent);
+begin
+  inherited;
+
+  MapFieldTypes();
+end;
+
+procedure TMSSQLDriver.DataModuleDestroy(Sender: TObject);
+begin
+  FFieldTypes.Free();
+end;
+
+function TMSSQLDriver.FieldTypes: TDictionary<TFieldType, String>;
+begin
+  Result := FFieldTypes;
+end;
+
 function TMSSQLDriver.Functions: TList<TDBFunction>;
 begin
 
@@ -58,6 +80,49 @@ end;
 function TMSSQLDriver.Indexes: TList<TDBIndex>;
 begin
 
+end;
+
+procedure TMSSQLDriver.MapFieldTypes;
+begin
+  FFieldTypes := TDictionary<TFieldType, String>.Create();
+
+  // Tipos Numéricos Exatos
+  FFieldTypes.Add(ftLargeint, 'BIGINT');
+  FFieldTypes.Add(ftInteger, 'INT');
+  FFieldTypes.Add(ftSmallint, 'SMALLINT');
+  FFieldTypes.Add(ftWord, 'TINYINT');
+  FFieldTypes.Add(ftBoolean, 'BIT');
+  FFieldTypes.Add(ftFloat, 'FLOAT');
+  FFieldTypes.Add(ftCurrency, 'MONEY');
+  FFieldTypes.Add(ftBCD, 'DECIMAL');  // Para valores decimais com precisão
+
+  // Tipos de Data e Hora
+  FFieldTypes.Add(ftDate, 'DATE');
+  FFieldTypes.Add(ftTime, 'TIME');
+  FFieldTypes.Add(ftDateTime, 'DATETIME');
+  FFieldTypes.Add(ftTimeStamp, 'DATETIME2');
+  FFieldTypes.Add(ftOraTimeStamp, 'DATETIMEOFFSET');
+
+  // Tipos de Cadeia de Caracteres (Texto)
+  FFieldTypes.Add(ftString, 'VARCHAR');
+  FFieldTypes.Add(ftWideString, 'NVARCHAR');
+  FFieldTypes.Add(ftFixedChar, 'CHAR');
+  FFieldTypes.Add(ftFixedWideChar, 'NCHAR');
+  FFieldTypes.Add(ftMemo, 'TEXT');
+  FFieldTypes.Add(ftWideMemo, 'NTEXT');
+
+  // Tipos Binários
+  FFieldTypes.Add(ftBlob, 'VARBINARY');
+  FFieldTypes.Add(ftGraphic, 'IMAGE');
+  FFieldTypes.Add(ftBytes, 'BINARY');
+
+  // Tipos Especializados
+  FFieldTypes.Add(ftGuid, 'UNIQUEIDENTIFIER');
+  FFieldTypes.Add(ftVariant, 'XML');
+  FFieldTypes.Add(ftFMTBcd, 'DECIMAL');  // Pode ser utilizado para BCDs precisos
+
+  // Outros tipos, como espaciais
+  FFieldTypes.Add(ftUnknown, 'GEOMETRY');  // Se você quiser incluir dados espaciais
 end;
 
 function TMSSQLDriver.New: IDriver;
@@ -96,6 +161,13 @@ begin
   Self.Free;
 end;
 
+function TMSSQLDriver.GetExternalFieldType(
+  const AInternalFieldType: TFieldType): string;
+begin
+  if not FFieldTypes.TryGetValue(AInternalFieldType, Result) then
+    Result := '';
+end;
+
 function TMSSQLDriver.GetFieldByTable(ATable: TDBTable): TObjectList<TDBField>;
 var
   field: TDBField;
@@ -118,6 +190,31 @@ begin
 
     Result.Add(field);
     qryFieldsByTable.Next();
+  end;
+end;
+
+function TMSSQLDriver.GetInternalFieldType(
+  const AExternalFieldType: string): TFieldType;
+var
+  FieldType: TFieldType;
+  ExternalType: string;
+begin
+  // Valor padrão caso não seja encontrado (use ftUnknown, por exemplo)
+  Result := ftUnknown;
+
+  // Percorre todas as chaves (TFieldType) do dicionário
+  for FieldType in FFieldTypes.Keys do
+  begin
+    // Para cada chave, obtém o valor associado (string)
+    ExternalType := FFieldTypes[FieldType];
+
+    // Compara a string externa com a string passada como parâmetro
+    if SameText(LowerCase(ExternalType), LowerCase(AExternalFieldType)) then
+    begin
+      // Se encontrar, define o resultado e encerra a busca
+      Result := FieldType;
+      Exit;
+    end;
   end;
 end;
 

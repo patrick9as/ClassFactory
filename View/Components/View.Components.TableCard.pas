@@ -3,7 +3,8 @@ unit View.Components.TableCard;
 interface
 
 uses
-  View.Components.FieldRow,
+  View.Table,
+  System.Generics.Collections,
   Model.DB.Entities,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
@@ -19,14 +20,11 @@ type
     procedure FrameClick(Sender: TObject);
   private
     FTable: TDBTable;
-    FFieldRowParent: TWinControl;
-    procedure CreateFieldRows(const ATable: TDBTable; AFieldRowParent: TWinControl);
     { Private declarations }
   public
     { Public declarations }
-    constructor Create(const ATable: TDBTable; AFieldRowParent: TWinControl);
+    constructor Create(const ATable: TDBTable);
     property Table: TDBTable read FTable;
-    property FieldRowParent: TWinControl read FFieldRowParent;
   end;
 
 implementation
@@ -35,7 +33,7 @@ implementation
 
 { TcompTableCard }
 
-constructor TCompTableCard.Create(const ATable: TDBTable; AFieldRowParent: TWinControl);
+constructor TCompTableCard.Create(const ATable: TDBTable);
 begin
   inherited Create(nil);
 
@@ -44,29 +42,18 @@ begin
   lblName.Caption := ATable.Name;
 
   FTable := ATable;
-  FFieldRowParent := AFieldRowParent;
-end;
-
-procedure TCompTableCard.CreateFieldRows(const ATable: TDBTable; AFieldRowParent: TWinControl);
-var
-  fieldRow: TCompFieldRow;
-  field: TDBField;
-  I: Integer;
-begin
-  for field in ATable.Fields do
-  begin
-    fieldRow := TCompFieldRow.Create(field);
-    fieldRow.Name := 'fieldRow' + I.ToString;
-    fieldRow.Parent := AFieldRowParent;
-    fieldRow.Visible := True;
-
-    Inc(I);
-  end;
 end;
 
 procedure TCompTableCard.FrameClick(Sender: TObject);
+var
+  view: TViewTable;
 begin
-  CreateFieldRows(FTable, FFieldRowParent);
+  view := TViewTable.Create(Self, FTable);
+  try
+    view.ShowModal();
+  finally
+    view.Free();
+  end;
 end;
 
 end.
