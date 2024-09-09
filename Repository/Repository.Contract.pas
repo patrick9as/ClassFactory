@@ -26,11 +26,11 @@ type
     function GetInternalFieldType(const AExternalFieldType: string): TFieldType;
     function GetExternalFieldType(const AInternalFieldType: TFieldType): string;
     function Tables: TObjectList<TDBTable>;
-    function Procedures: TList<TDBProcedure>;
-    function Functions: TList<TDBFunction>;
-    function Users: TList<TDBUser>;
-    function Indexes: TList<TDBIndex>;
-    function Triggers: TList<TDBTrigger>;
+    function Procedures: TObjectList<TDBProcedure>;
+    function Functions: TObjectList<TDBFunction>;
+    function Users: TObjectList<TDBUser>;
+    function Indexes: TObjectList<TDBIndex>;
+    function Triggers: TObjectList<TDBTrigger>;
   end;
 
 implementation

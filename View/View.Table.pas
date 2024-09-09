@@ -35,7 +35,6 @@ type
     Label6: TLabel;
     procedure btnGenerateModelClick(Sender: TObject);
     procedure dtsFieldsDataChange(Sender: TObject; Field: TField);
-    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FTable: TDBTable;
@@ -59,7 +58,12 @@ procedure TViewTable.btnGenerateModelClick(Sender: TObject);
 var
   ctrl: TCtrlModelFactory;
 begin
-  memModel.Text := TCtrlModelFactory.Create.Generate(FTable);
+  ctrl := TCtrlModelFactory.Create();
+  try
+    memModel.Text := ctrl.Generate(FTable);
+  finally
+    ctrl.Free();
+  end;
 end;
 
 constructor TViewTable.Create(AOwner: TComponent; ATable: TDBTable);
@@ -73,6 +77,7 @@ begin
 
   FeedCdsFields();
   FeedCbxFieldType();
+  dtsFieldsDataChange(nil,nil);
 end;
 
 procedure TViewTable.dtsFieldsDataChange(Sender: TObject; Field: TField);
@@ -112,25 +117,23 @@ begin
   cdsFields.First();
 end;
 
-procedure TViewTable.FormShow(Sender: TObject);
-begin
-  dtsFieldsDataChange(nil,nil);
-end;
-
 procedure TViewTable.FeedCbxFieldType();
 var
   ctrl: TCtrlModelFactory;
-  FieldTypes: TStringList;
   fieldType: String;
+  fieldList: TStringList;
 begin
-  FieldTypes := TCtrlModelFactory.Create.ListFieldTypes;
+  ctrl := TCtrlModelFactory.Create();
   try
-    for fieldType in FieldTypes do
-    begin
-      cbxFieldType.Items.Add(fieldType)
+    fieldList := ctrl.ListFieldTypes();
+    try
+      for fieldType in fieldList do
+        cbxFieldType.Items.Add(fieldType)
+    finally
+      fieldList.Free();
     end;
   finally
-    FieldTypes.Free();
+    ctrl.Free();
   end;
 end;
 

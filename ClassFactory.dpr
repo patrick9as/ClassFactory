@@ -2,7 +2,7 @@ program ClassFactory;
 
 uses
   Vcl.Forms,
-  untMenu in 'untMenu.pas' {frmMenu},
+  View.Menu in 'View\View.Menu.pas' {ViewMenu},
   Repository.Contract in 'Repository\Repository.Contract.pas',
   Repository.Drivers.Firebird in 'Repository\Drivers\Repository.Drivers.Firebird.pas' {FirebirdDriver: TDataModule},
   Repository.DataBase in 'Repository\Repository.DataBase.pas',
@@ -20,6 +20,6 @@ begin
   ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TfrmMenu, frmMenu);
+  Application.CreateForm(TViewMenu, ViewMenu);
   Application.Run;
 end.

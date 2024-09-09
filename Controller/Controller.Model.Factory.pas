@@ -19,8 +19,6 @@ type
     FPublicProperties: string;
     procedure LoadProperties();
   public
-    constructor Create();
-    destructor Free();
     function Generate(const ATable: TDBTable): string;
     function ListFieldTypes: TStringList;
   end;
@@ -29,23 +27,14 @@ implementation
 
 { CtrlModelFactory }
 
-constructor TCtrlModelFactory.Create;
-begin
-end;
-
-destructor TCtrlModelFactory.Free;
-begin
-end;
-
 function TCtrlModelFactory.Generate(const ATable: TDBTable): string;
 var
   DataBase: TDataBase;
   MyModel: TStringList;
 begin
-  FDriver := DataBase.New.Driver;
-
   FTable := ATable;
 
+  FDriver := DataBase.New.Driver;
   MyModel := TStringList.Create();
   try
     LoadProperties();
@@ -71,7 +60,8 @@ begin
       Result := Text;
     end;
   finally
-    MyModel.Free;
+    MyModel.Free();
+    TDataModule(FDriver).Free();
   end;
 end;
 
@@ -82,11 +72,12 @@ var
 begin
   Result := TStringList.Create();
   FDriver := DataBase.New.Driver;
-
-  for fieldType := Low(TFieldType) to High(TFieldType) do
-  begin
-    if FDriver.GetExternalFieldType(fieldType)  <> ''then
-    Result.Add(FDriver.GetExternalFieldType(fieldType));
+  try
+    for fieldType := Low(TFieldType) to High(TFieldType) do
+      if FDriver.GetExternalFieldType(fieldType)  <> ''then
+        Result.Add(FDriver.GetExternalFieldType(fieldType));
+  finally
+    TDataModule(FDriver).Free();
   end;
 end;
 

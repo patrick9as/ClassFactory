@@ -100,8 +100,8 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="untMenu.pas">
-            <Form>frmMenu</Form>
+        <DCCReference Include="View\View.Menu.pas">
+            <Form>ViewMenu</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Repository\Repository.Contract.pas"/>

@@ -26,11 +26,11 @@ type
     function New: IDriver;
     function FieldTypes: TDictionary<TFieldType, String>;
     function Tables: TObjectList<TDBTable>;
-    function Procedures: TList<TDBProcedure>;
-    function Functions: TList<TDBFunction>;
-    function Users: TList<TDBUser>;
-    function Indexes: TList<TDBIndex>;
-    function Triggers: TList<TDBTrigger>;
+    function Procedures: TObjectList<TDBProcedure>;
+    function Functions: TObjectList<TDBFunction>;
+    function Users: TObjectList<TDBUser>;
+    function Indexes: TObjectList<TDBIndex>;
+    function Triggers: TObjectList<TDBTrigger>;
   end;
 
 var
@@ -49,7 +49,7 @@ begin
 
 end;
 
-function TFirebirdDriver.Functions: TList<TDBFunction>;
+function TFirebirdDriver.Functions: TObjectList<TDBFunction>;
 begin
 
 end;
@@ -72,7 +72,7 @@ begin
 
 end;
 
-function TFirebirdDriver.Indexes: TList<TDBIndex>;
+function TFirebirdDriver.Indexes: TObjectList<TDBIndex>;
 begin
 
 end;
@@ -87,7 +87,7 @@ begin
   Result := TFirebirdDriver.Create(nil);
 end;
 
-function TFirebirdDriver.Procedures: TList<TDBProcedure>;
+function TFirebirdDriver.Procedures: TObjectList<TDBProcedure>;
 begin
 
 end;
@@ -97,12 +97,12 @@ begin
 
 end;
 
-function TFirebirdDriver.Triggers: TList<TDBTrigger>;
+function TFirebirdDriver.Triggers: TObjectList<TDBTrigger>;
 begin
 
 end;
 
-function TFirebirdDriver.Users: TList<TDBUser>;
+function TFirebirdDriver.Users: TObjectList<TDBUser>;
 begin
 
 end;

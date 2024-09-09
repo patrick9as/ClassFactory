@@ -12,7 +12,6 @@ object ViewTable: TViewTable
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  OnShow = FormShow
   DesignSize = (
     635
     543)

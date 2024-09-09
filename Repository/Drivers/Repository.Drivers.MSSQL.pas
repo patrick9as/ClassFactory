@@ -37,11 +37,11 @@ type
     function New: IDriver;
     function FieldTypes: TDictionary<TFieldType, String>;
     function Tables: TObjectList<TDBTable>;
-    function Procedures: TList<TDBProcedure>;
-    function Functions: TList<TDBFunction>;
-    function Users: TList<TDBUser>;
-    function Indexes: TList<TDBIndex>;
-    function Triggers: TList<TDBTrigger>;
+    function Procedures: TObjectList<TDBProcedure>;
+    function Functions: TObjectList<TDBFunction>;
+    function Users: TObjectList<TDBUser>;
+    function Indexes: TObjectList<TDBIndex>;
+    function Triggers: TObjectList<TDBTrigger>;
   end;
 
 var
@@ -72,12 +72,12 @@ begin
   Result := FFieldTypes;
 end;
 
-function TMSSQLDriver.Functions: TList<TDBFunction>;
+function TMSSQLDriver.Functions: TObjectList<TDBFunction>;
 begin
 
 end;
 
-function TMSSQLDriver.Indexes: TList<TDBIndex>;
+function TMSSQLDriver.Indexes: TObjectList<TDBIndex>;
 begin
 
 end;
@@ -130,7 +130,7 @@ begin
   Result := TMSSQLDriver.Create(nil);
 end;
 
-function TMSSQLDriver.Procedures: TList<TDBProcedure>;
+function TMSSQLDriver.Procedures: TObjectList<TDBProcedure>;
 begin
 
 end;
@@ -218,12 +218,12 @@ begin
   end;
 end;
 
-function TMSSQLDriver.Triggers: TList<TDBTrigger>;
+function TMSSQLDriver.Triggers: TObjectList<TDBTrigger>;
 begin
 
 end;
 
-function TMSSQLDriver.Users: TList<TDBUser>;
+function TMSSQLDriver.Users: TObjectList<TDBUser>;
 begin
 
 end;
