@@ -2,7 +2,8 @@
 
 ## About the Project
 
-This project aims to provide a free application that helps the Delphi community with database migration systems. It is built using [Prisma](https://www.prisma.io/) and [Knex.js](https://knexjs.org/) for Node.js.
+This project aims to provide a free application that helps the Delphi community with database migration systems and auto-generate models to your project.
+It is built based on [Prisma](https://www.prisma.io/) and [Knex.js](https://knexjs.org/) for Node.js.
 
 You can support this project by contributing to our list of database driver repositories.
 
