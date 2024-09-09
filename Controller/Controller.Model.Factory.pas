@@ -7,6 +7,7 @@ uses
   Repository.Contract,
   Repository.DataBase,
   System.Classes,
+  Data.DB,
   Model.DB.Entities;
 
 type
@@ -18,20 +19,32 @@ type
     FPublicProperties: string;
     procedure LoadProperties();
   public
+    constructor Create();
+    destructor Free();
     function Generate(const ATable: TDBTable): string;
+    function ListFieldTypes: TStringList;
   end;
 
 implementation
 
 { CtrlModelFactory }
 
+constructor TCtrlModelFactory.Create;
+begin
+end;
+
+destructor TCtrlModelFactory.Free;
+begin
+end;
+
 function TCtrlModelFactory.Generate(const ATable: TDBTable): string;
 var
-  MyModel: TStringList;
   DataBase: TDataBase;
+  MyModel: TStringList;
 begin
-  FTable := ATable;
   FDriver := DataBase.New.Driver;
+
+  FTable := ATable;
 
   MyModel := TStringList.Create();
   try
@@ -40,6 +53,8 @@ begin
     with MyModel do
     begin
       Add('unit MyProject.Model.' + ATable.Name + ';');
+      Add('');
+      Add('interface');
       Add('');
       Add('type');
       Add('  TModel' + ATable.Name + ' = class');
@@ -57,6 +72,21 @@ begin
     end;
   finally
     MyModel.Free;
+  end;
+end;
+
+function TCtrlModelFactory.ListFieldTypes: TStringList;
+var
+  DataBase: TDataBase;
+  fieldType: TFieldType;
+begin
+  Result := TStringList.Create();
+  FDriver := DataBase.New.Driver;
+
+  for fieldType := Low(TFieldType) to High(TFieldType) do
+  begin
+    if FDriver.GetExternalFieldType(fieldType)  <> ''then
+    Result.Add(FDriver.GetExternalFieldType(fieldType));
   end;
 end;
 

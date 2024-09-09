@@ -94,7 +94,7 @@ begin
   FFieldTypes.Add(ftBoolean, 'BIT');
   FFieldTypes.Add(ftFloat, 'FLOAT');
   FFieldTypes.Add(ftCurrency, 'MONEY');
-  FFieldTypes.Add(ftBCD, 'DECIMAL');  // Para valores decimais com precisão
+  FFieldTypes.Add(ftBCD, 'DECIMAL');
 
   // Tipos de Data e Hora
   FFieldTypes.Add(ftDate, 'DATE');
@@ -119,10 +119,10 @@ begin
   // Tipos Especializados
   FFieldTypes.Add(ftGuid, 'UNIQUEIDENTIFIER');
   FFieldTypes.Add(ftVariant, 'XML');
-  FFieldTypes.Add(ftFMTBcd, 'DECIMAL');  // Pode ser utilizado para BCDs precisos
+  FFieldTypes.Add(ftFMTBcd, 'DECIMAL');
 
   // Outros tipos, como espaciais
-  FFieldTypes.Add(ftUnknown, 'GEOMETRY');  // Se você quiser incluir dados espaciais
+  FFieldTypes.Add(ftUnknown, 'GEOMETRY');
 end;
 
 function TMSSQLDriver.New: IDriver;

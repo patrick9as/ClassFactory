@@ -17,7 +17,7 @@ object MSSQLDriver: TMSSQLDriver
   object qryTables: TFDQuery
     Connection = FDConnection
     SQL.Strings = (
-      'SELECT TOP 10'
+      'SELECT'
       '  t.object_id AS ID,'
       '  t.name AS Name,'
       '  s.name AS SchemaName'
